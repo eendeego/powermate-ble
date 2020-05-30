@@ -26,6 +26,7 @@ class PowerMateBleDevice extends EventEmitter {
   }
 
   #mac;
+  #verbose;
   #peripheral;
   #service;
   #batteryChar;
@@ -39,11 +40,14 @@ class PowerMateBleDevice extends EventEmitter {
   #onBatteryReadHandler = this.onBatteryRead.bind(this);
   #onKnobReadHandler = this.onKnobRead.bind(this);
 
-  constructor(mac) {
+  constructor(mac, options = {}) {
     super();
     this.setMaxListeners(0);
 
-    this.#mac = mac;
+    this.#mac = mac.toLowerCase();
+    const { verbose = false } = options;
+    this.#verbose = verbose;
+
     this.init();
   }
 
@@ -100,7 +104,7 @@ class PowerMateBleDevice extends EventEmitter {
 
   onDiscover(peripheral) {
     // Check mac address matches
-    if (this.#mac != peripheral.address) {
+    if (this.#mac != peripheral.address.toLowerCase()) {
       return;
     }
 
@@ -148,18 +152,30 @@ class PowerMateBleDevice extends EventEmitter {
         }
 
         // Signup for battery notifications
-        this.#batteryChar.notify(true, function (error) {
-          console.log(
-            "PowerMateBleDevice: Signed up for battery notifications"
-          );
+        this.#batteryChar.notify(true, (error) => {
+          if (err) {
+            console.log("Error signing up for battery notifications");
+            return;
+          }
+          if (this.#verbose) {
+            console.log(
+              "PowerMateBleDevice: Signed up for battery notifications"
+            );
+          }
         });
 
         // Listen for battery notifications
         this.#batteryChar.on("read", this.#onBatteryReadHandler);
 
         // Signup for knob notifications
-        this.#knobChar.notify(true, function (error) {
-          console.log("PowerMateBleDevice: Signed up for knob notifications");
+        this.#knobChar.notify(true, (error) => {
+          if (err) {
+            console.log("Error signing up for knob notifications");
+            return;
+          }
+          if (this.#verbose) {
+            console.log("PowerMateBleDevice: Signed up for knob notifications");
+          }
         });
 
         // Listen for knob notifications
@@ -200,13 +216,13 @@ class PowerMateBleDevice extends EventEmitter {
   }
 
   onBatteryRead(data, isNotification) {
-    const value = parseInt(data.toString("hex"), 16);
+    const value = data.readUInt8(0);
 
     this.emit("battery", value);
   }
 
   onKnobRead(data, isNotification) {
-    const rawValue = parseInt(data.toString("hex"), 16);
+    const rawValue = data.readUInt8(0);
 
     switch (rawValue) {
       case 101:
