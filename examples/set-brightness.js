@@ -13,10 +13,10 @@ if (process.argv.length < 3) {
   process.exit();
 }
 
-const mac = process.argv[2];
+const macAddress = process.argv[2];
 
 // Create powermate instance
-const powermate = new PowerMateBleDevice(mac);
+const powermate = new PowerMateBleDevice(macAddress);
 process.stdout.write("Waiting for connection\n");
 
 powermate.on("status", (status) => {
