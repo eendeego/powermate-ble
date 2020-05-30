@@ -1,10 +1,12 @@
 {
   "name": "powermate-ble",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "Interact with a PowerMate Bluethooth device",
   "main": "src/index.js",
-  "type": "module",
   "repository": "https://github.com/eendeego/powermate-ble.git",
   "author": "Luis Reis <luis.m.reis@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "noble": "git://github.com:eendeego/noble.git#no-pre-gyp"
+  }
 }
