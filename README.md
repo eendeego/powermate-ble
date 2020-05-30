@@ -5,13 +5,13 @@ Interact with a PowerMate Bluethooth device
 ## Install
 
 ```sh
-npm install powermate-ble --save
+npm install powermateble --save
 ```
 
 Or
 
 ```sh
-yarn add powermate-ble
+yarn add powermateble
 ```
 
 ## Examples

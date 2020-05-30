@@ -1,5 +1,10 @@
 {
-  "name": "powermate-ble",
+  "name": "powermateble",
+  "keywords": [
+    "bluetooth",
+    "BLE",
+    "powermate"
+  ],
   "version": "0.9.0",
   "description": "Interact with a PowerMate Bluethooth device",
   "main": "src/index.js",
