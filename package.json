@@ -12,6 +12,6 @@
   "author": "Luis Reis <luis.m.reis@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "noble": "git://github.com:eendeego/noble.git#no-pre-gyp"
+    "noble": "git://github.com/eendeego/noble.git#no-pre-gyp"
   }
 }
